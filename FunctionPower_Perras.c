@@ -175,21 +175,21 @@ double power2b (double x, long n)
 double power3 (double x, long n) { return 0 ; }
 
 /*************************************************/
-double pow4 (double x, long n , double r) 
+void pow4 (double x, long n , double *r) 
 { 
-    if (n==0) 
+     
+    if (n!=0)  
     {
-       return r ;
-    } 
-    else 
-    {
-       return pow4(x, n-1, r*x) ; 
+        *r *= x;
+        pow4(x, n-1, r) ; 
     } 
 }
 
 double power4 (double x, long n) 
 { 
-    return pow4(x, n, 1) ; 
+    double r = 1.0;
+    pow4(x, n, &r);
+    return  r; 
 }
 
 /*************************************************/
@@ -234,28 +234,27 @@ double power7 (double x, long n) { return 0 ; }
 
 /*************************************************/
 
-double pow8 (double x, long n, double r) 
+void pow8 (double x, long n, double *r) 
 { 
-    if (n==0) 
-    {
-        return r ;
-    } 
-    else 
+    if(n!=0) 
     {
         if (n%2==0) 
         {
-            return pow8(x*x,n/2,r);
+            pow8(x*x,n/2,r);
         } 
         else 
         {
-            return pow8(x*x,n/2,r*x);
+            *r *= x ;
+            pow8(x*x,n/2,r);
         }
     }
 }
 
 double power8 (double x, long n) 
 { 
-    return pow8(x,n,1) ; 
+    double r = 1.0;
+    pow8(x,n,&r) ; 
+    return r;
 }
 
 /*************************************************/
@@ -307,6 +306,6 @@ double power (double x, long n, int i)
 int main(int argc, char** argv)
 {
     
-    printf(" %f \n",power(2,4,2));
+    printf(" %f \n",power(2,3,8));
     return 0 ;
 }
