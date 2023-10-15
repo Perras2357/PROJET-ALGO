@@ -1,19 +1,24 @@
 #include <stdio.h>
 
 
-int power1 ( int x , int n ) 
+ double power1 ( double x , long n ) 
 {
     if ( n == 0 )
     {
         return 1 ;
     }
-    else 
+    else if ( n < 0)
+    {
+        return (1/x)*power1(x,n+1) ;
+    } 
+    else
     {
         return x*power1(x,n-1) ;
-    }      
+    }
 }
 
-int pow3( int x,int n, int *r)
+
+double pow3( double x,long  n, double *r)
 {
     if ( n == 0)
     {
@@ -26,15 +31,15 @@ int pow3( int x,int n, int *r)
     }
 }
 
-int power3 (int x,int n) 
+double power3 (double x,long  n) 
 {
-    int r = 1;
+    double r = 1.0;
     pow3 ( x,n,&r);
     return r;
 }
 
 
-int power5 ( int x , int n) 
+double power5 ( double x , long  n) 
 {
     if(n== 0){
         return 1 ;
@@ -47,7 +52,7 @@ int power5 ( int x , int n)
     }
 }
 
-int power7 ( int x , int n) 
+double power7 ( double x , long  n) 
 {
     if(n== 0){
         return 1 ;
@@ -62,7 +67,7 @@ int power7 ( int x , int n)
 
 
 
-int pow9( int x, int n ,int *r)
+double pow9( double x, long  n ,double *r)
 {
     if ( n==0)
     {
@@ -77,9 +82,9 @@ int pow9( int x, int n ,int *r)
     }
 }
 
-int power9 ( int x , int n)
+double power9 ( double x , long  n)
 {
-    int r = 1 ;
+    double r = 1.0 ;
     pow9(x,n,&r);
     return r ;
 }
@@ -90,7 +95,7 @@ int power9 ( int x , int n)
 int main() {
    
  
-    printf(" la puissance est : %d",power9 (2,5)) ;
+    printf(" la puissance est : %.2f",power1 ( 0,0)) ;
 
 
     return 0;
