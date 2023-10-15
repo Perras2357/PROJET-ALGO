@@ -148,12 +148,21 @@ double power1 (double x, long n) { return 0 ; }
 double power2a (double x, long n) 
 { 
     double r = 1.0;
-    
-    for (int i=1;i<=n ; i++) 
+
+    for (int i=1;i<=fabs(n) ; i++) 
     {
-        r = r * x ;
+        r = r * x ;  
     }
-    return r ; 
+
+    if (n<0) 
+    {
+        return (1.0/r);
+    } 
+    else
+    {
+        return r;
+    }
+
 }
 
 /*************************************************/
@@ -306,6 +315,6 @@ double power (double x, long n, int i)
 int main(int argc, char** argv)
 {
     
-    printf(" %f \n",power(2,3,8));
+    printf(" %f \n",power(-2,-2,2));
     return 0 ;
 }
