@@ -361,8 +361,8 @@ int sousX3(int n,int r)
         return r ;
     }
     else
-    {
-        return X2(n-1) + ln2(X2(n-1));
+    {    
+        return sousX3(n-1,r)  + ln2(sousX3(n-1,r));
     }
 }
 
@@ -396,7 +396,6 @@ int X4(int n)
 int main(int argc, char** argv)
 {
     
-    printf(" %d \n",X4(3));
+    printf(" %d \n",X3 (3));
     return 0 ;
 }
-
