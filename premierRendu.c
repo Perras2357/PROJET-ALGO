@@ -30,7 +30,6 @@ typedef enum { false, true} bool ;
 // Il est proposé de faire 3 versions pour observer des phénomènes de précision.
 // C'est le même code, seul le type change.
 
-float fact = 1.0 ;
 int k = 20;
 const long double E = 2.7182818284590452353602874713526624977572470936999595749669676277240766303535475945713821785251664274;
 //e = 2,7182818284 5904523536 0287471352 6624977572 4709369995
@@ -38,17 +37,16 @@ const long double E = 2.71828182845904523536028747135266249775724709369995957496
 /*************************************************/
 float Efloat () 
 { 
+    float fact = 1.0 ;
     float e = 1.0f; 
-    int i = 1;
     
-    while(fabs(E-e)>0.01)
+    for(int i = 1; (1/fact)>0; i++)
     {
         fact = fact*i;
         e += 1.0/fact;
         i++;
     }
     
-    fact = 1.0;
     return e ; 
 }
 
@@ -56,17 +54,16 @@ float Efloat ()
 
 double Edouble () 
 {
+    double fact = 1.0; 
     double e = 1.0; 
-    int i = 1;
     
-    while(fabs(E-e)>0.000001)
+    for(int i = 1; (1/fact)>0; i++)
     {
         fact = fact*i;
         e += 1.0/fact;
         i++;
     }
 
-    fact = 1.0;
     return e ;  
 }
   
@@ -75,9 +72,9 @@ double Edouble ()
 long double Elongdouble () 
 { 
     long double e = 1.0; 
-    int i = 1;
+    long double fact = 1.0;
     
-    while(fabs(E-e)>0.000001)
+    for(int i = 1; (1/fact)>0; i++)
     {
         fact = fact*i;
         e += 1.0/fact;
@@ -225,7 +222,7 @@ double power3 (double x,long  n)
 void pow4 (double x, long n , double *r) 
 { 
 
-    if (nISNOT 0)  
+    if (n ISNOT 0)  
     {
         *r *= x;
         pow4(x, n-1, r) ; 
@@ -298,7 +295,7 @@ double power7 ( double x , long  n)
 
 void pow8 (double x, long n, double *r) 
 { 
-    if(nISNOT 0) 
+    if(n ISNOT 0) 
     {
         if (n%2==0) 
         {
@@ -348,7 +345,7 @@ double power10 (double x, long n)
 {
     int r = 1.0 ;
 
-    while (nISNOT 0) 
+    while (n ISNOT 0) 
     { 
         if (n%2 == 1) 
         {
@@ -553,7 +550,7 @@ int X3(int n)
 void sousX4(int n,int *r)
 {
     
-    if(nISNOT 0)
+    if(n ISNOT 0)
     {
         *r = *r + ln2(*r) ;
         sousX4(n-1,r);
@@ -644,7 +641,7 @@ if (true) {
        
 
         printf(" e1 = %.20f \n", Efloat()) ;
-        printf(" e3 = %.30lf \n", Edouble()) ; 
+        printf(" e2 = %.30lf \n", Edouble()) ; 
         printf(" e3 = %.40Lf \n", Elongdouble()) ; 
         
 }
