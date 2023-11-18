@@ -517,25 +517,29 @@ int X1(int n)
 /*************************************************/
 int X2(int n)
 {
+    int X ;
     if (n==0) 
     {
         return 2 ;
     } 
     else 
     {
-        return X2(n-1) + ln2(X2(n-1));
+        X = X2(n-1) ;
+        return X + ln2(X);
     }
 }
 /*************************************************/
 int sousX3(int n,int r)
 {
+    int X ;
     if (n==0) 
     {
         return r ;
     }
     else
     {    
-        return sousX3(n-1,r)  + ln2(sousX3(n-1,r));
+        X = sousX3(n-1,r) ;
+        return X  + ln2(X);
     }
 }
 
