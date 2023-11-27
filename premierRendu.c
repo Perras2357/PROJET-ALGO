@@ -38,9 +38,9 @@ const long double E = 2.71828182845904523536028747135266249775724709369995957496
 float Efloat () 
 { 
     float fact = 1.0 ;
-    float e = 1.0f; 
+    float e = 1.0f; int i = 1;
     
-    for(int i = 1; (1/fact)>0; i++)
+    while((1/fact)>0)
     {
         fact = fact*i;
         e += 1.0/fact;
@@ -55,9 +55,9 @@ float Efloat ()
 double Edouble () 
 {
     double fact = 1.0; 
-    double e = 1.0; 
+    double e = 1.0; int i = 1;
     
-    for(int i = 1; (1/fact)>0; i++)
+    while((1/fact)>0)
     {
         fact = fact*i;
         e += 1.0/fact;
@@ -72,9 +72,9 @@ double Edouble ()
 long double Elongdouble () 
 { 
     long double e = 1.0; 
-    long double fact = 1.0;
+    long double fact = 1.0; int i = 1;
     
-    for(int i = 1; (1/fact)>0; i++)
+    while((1/fact)>0)
     {
         fact = fact*i;
         e += 1.0/fact;
@@ -164,9 +164,9 @@ double power1 ( double x , long n )
 
 double power2a (double x, long n) 
 { 
-    double r = 1.0;
+    double r = 1.0; int val = fabs(n) ;
 
-    for (int i=1;i<=fabs(n) ; i++) 
+    for (int i=1;i<=val ; i++) 
     {
         r = r * x ;  
     }
@@ -398,39 +398,7 @@ double power (double x, long n, int i)
     }
 }
 /*************************************************/
-int Ackermann2 (int m, int n) {
-    while (m > 0) {
-        if (n == 0) {
-            n = 1;
-        } else {
-            n = Ackermann2 (m, n - 1);
-        }
-        m--;
-    }
-    if (m == 0) {
-        return n + 1;
-    } else {
-        return Ackermann2 (m - 1, n);
-    }
-}
-/*************************************************/
-int Ackermann3(int m, int n) {
-    while (m > 0) {
-        if (n == 0) {
-            n = 1;
-        } else {
-            n = Ackermann3(m, n - 1);
-            m--;
-        }
-    }
-    if (m == 0) {
-        return n + 1;
-    } else {
-        return Ackermann3(m - 1, 1);
-    }
-}
-/*************************************************/
-int Ackermann4(int m,int n)
+int Ackermann2(int m,int n)
 {
     if ( m == 0 ) 
     {
@@ -440,39 +408,20 @@ int Ackermann4(int m,int n)
         int r = 1 ;
         for ( int i =1 ; i <= n+1 ; i++)
         {
-            r = Ackermann4(m-1,r);
+            r = Ackermann2(m-1,r);
         }
         return r;
     }
     
 }
 /*************************************************/
-int Ackermann5(int m, int n) {
-    while (m > 0) {
-        if (n == 0) {
-            n = 1;
-        } else {
-            n = Ackermann5(m, n - 1);
-        }
-        m--;
-    }
-    return n + 1;
-}
-/*************************************************/
 
 int Ackermann (int m, int n , int i) {
-    
     switch (i) {
         
         case 1: Ackermann1( m ,  n) ;
                 break ;
         case 2: Ackermann2( m ,  n) ;
-                break ;
-        case 3: Ackermann3( m , n) ;
-                break ;
-        case 4: Ackermann4( m ,  n) ;
-                break ;
-        case 5: Ackermann5( m ,  n) ;
                 break ;
     default:
             return 0;
@@ -641,7 +590,7 @@ if (false) {
   // e = 2,7182818284 5904523536 0287471352 6624977572 4709369995 
   //       9574966967 6277240766 3035354759 4571382178 5251664274
 
-if (true) {  
+if (false) {  
        
 
         printf(" e1 = %.20f \n", Efloat()) ;
@@ -737,9 +686,9 @@ if (false) {
                 
 if (false) { 
  
-        for(i=1 ; i<=5 ; i++)  // numéro de version
+        for(i=1 ; i<3 ; i++)  // numéro de version
         
-        for(j=0 ; j<4 ; j++)  // test de A(j,0) pour j de 0 à 5
+        for(j=0 ; j<5 ; j++)  // test de A(j,0) pour j de 0 à 5
         
         printf("Ack%d(%d) = %d \n", i, j, Ackermann(j,0,i)) ;
 }
@@ -749,8 +698,8 @@ if (false) {
                 
 if (false) { 
  
-        for(i=1 ; i<=5 ; i++)  // numéro de version
-            printf(" X%d  = %d\n",i,X(3,i)) ;
+        for(i=1 ; i<5 ; i++)  // numéro de version
+            printf(" X%d  = %d\n",i,X(100,i)) ;
 }
 
 /***********************************************************************/
