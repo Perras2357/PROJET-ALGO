@@ -1,468 +1,460 @@
-
-
 #include <stdio.h>
 #include <stdlib.h>
 
-/*************************************************** /
-/* */
-/* sucre syntaxique */
-/* */
-/*************************************************** /
+/*************************************************/
+/*                                               */
+/*                sucre syntaxique               */
+/*                                               */
+/*************************************************/
 
-#définir ET &&
-#définir OU ||
-#define N'EST PAS !=
-#définir NON !
-#définir alors
+#define AND &&
+#define OR ||
+#define ISNOT !=
+#define NOT !
+#define then
 
-typedef enum { faux, vrai} bool ;
+typedef enum { FALSE, TRUE} bool;
 
-/*************************************************** /
-/* */
-/* factorielle */
-/* */
-/*************************************************** /
+/*************************************************/
+/*                                               */
+/*          definition type liste                */
+/*                                               */
+/*************************************************/
 
-fait long (int n)
-{ if (n==0) renvoie 1 ;
-  sinon, retourne n * fact(n-1) ;
-}
+typedef struct element {
+    int data;          
+    struct element* next;  
+} Bloc;
 
-// itou avec un arg out => passage par adresse
+typedef Bloc* Liste ;
 
-void bisfact(int n, long * r)
-{ si (n==0)
-         *r=1,0 ;
-  sinon { bisfact(n-1,r) ;
-         *r = *r *n ;
-       }
-}
+/*************************************************/
+/*                                               */
+/*                predeclarations                */
+/*                                               */
+/*************************************************/
 
-fait long2 (int n)
-{ long r ;
-  bisfact(n,&r) ;
-  retourner r ;
-}
+/* initialise une Liste � vide */
+void initVide(Liste *L);
 
-/*************************************************** /
-/* */
-/* Calcul de e */
-/* */
-/*************************************************** /
+/* renvoie 1 si la Liste en parametre est vide, 0 sinon */
+bool estVide(Liste l);
 
-  // d'après google,
-  // e = 2,7182818284 5904523536 0287471352 6624977572 4709369995
-  // 9574966967 6277240766 3035354759 4571382178 5251664274
+/* renvoie le premier element de la Liste en parametre */
+int premier(Liste l);
 
-     // Il est proposé de faire 3 versions pour observer des phénomènes de précision.
-     // C'est le même code, seul le type change.
+/* renvoie une nouvelle Liste correspondant a celle en parametre, avec l'element x ajoute en haut de la pile */
+Liste ajoute(int x, Liste l);
 
-/*************************************************** /
+/* modifie la Liste en parametre: x est ajoute comme premier element */
+void empile(int x, Liste* L);
 
-float Efloat () { return 0 ; }
+/* renvoie une nouvelle Liste correspondant a celle en parametre sans son premier element */
+Liste suite(Liste l);
 
-/*************************************************** /
+/* modifie la Liste en parametre: le premier element est retire */
+void depile(Liste* l);
 
-double Edouble () {retour 0 ; }
-  
-/*************************************************** /
+/* affichage simple en recursif et en iteratif */
+void affiche_rec(Liste l);
+void affiche_iter(Liste l);
 
-long double Elongdouble () { return 0 ; }
+/* longueur en recursif et en iteratif */
+int longueur_rec (Liste l);
+int longueur_iter (Liste l);
 
-/*************************************************** /
-/* */
-/* Suite Y */
-/* */
-/*************************************************** /
-
-void afficheYfloat (int n) {}
-
-/*************************************************** /
-
-void afficheYdouble (int n) {}
-
-/*************************************************** /
-
-void afficheYlongdouble (int n) {}
+/*  Elimination du dernier element en recursif et en iteratif  */
+/*  VD est la sousprocedure utilitaire de la version recursive */
+void VD (Liste *L);
+void VireDernier_rec (Liste *L);
+void VireDernier_iter (Liste *L);
 
 
-/*************************************************** /
-/* */
-/* Puissance */
-/* */
-/*************************************************** /
+/*************************************************/
+/*                                               */
+/*                briques de base                */
+/*                                               */
+/*************************************************/
 
 
-double puissance1 (double x, long n) { return 0 ; }
-
-/*************************************************** /
-
-double puissance2a (double x, long n) { return 0 ; }
-
-/*************************************************** /
-
-double puissance2b (double x, long n) { return 0 ; }
-
-/*************************************************** /
-
-double puissance3 (double x, long n) { return 0 ; }
-
-/*************************************************** /
-
-double puissance4 (double x, long n) { return 0 ; }
-
-/*************************************************** /
-
-     // Observation (1+1/10^k)^(10^k) : rame : 8 en 1/2s, 9 en qqs s, 10 en 1m
-
-double puissance5 (double x, long n)
+void initVide( Liste *L)
 {
-    si (n == 0)
-         retourner 1 ;
-    sinon si (n % 2 == 0)
-              retourner (puissance5(x,n/2)*puissance5(x,n/2) ) ;
-         sinon return (power5(x,n/2)*power5(x,n/2) *x) ;   
+    *L = NULL ;
 }
 
-/*************************************************** /
-
-double puissance6 (double x, long n) { return 0 ; }
-
-/*************************************************** /
-
-double puissance7 (double x, long n) { return 0 ; }
-
-/*************************************************** /
-
-double puissance8 (double x, long n) { return 0 ; }
-
-/*************************************************** /
-
-double puissance9 (double x, long n) { return 0 ; }
-
-/*************************************************** /
-
-     // Observation (1+1/10^k)^(10^k) : calcul immédiat
-
-double puissance10 (double x, long n)
+bool estVide(Liste l)
 {
-    double r = 1,0 ;
-    tandis que (n N'EST PAS 0)
-      { si (n % 2 == 1) alors r = r*x ; // pas d'autre
-        n = n / 2 ;
-        x = x * x ;
-       }
-    retourner r ;
+    return l == NULL ;
 }
 
-/*************************************************** /
-
-double puissance (double x, long n, int i)
-{ commutateur (i)  
-   {
-   cas 1 : renvoyer power1(x,n) ; casser ;
-   cas 2 : return power2a(x,n) ; casser ; // 2 pour 2a
-   cas 0 : renvoie power2b(x,n) ; casser ; // 0 pour 2b
-   cas 3 : return power3(x,n) ; casser ;
-   cas 4 : renvoie la puissance4(x,n) ; casser ;
-   cas 5 : retour power5(x,n) ; casser ;
-   cas 6 : retourner la puissance6(x,n) ; casser ;
-   cas 7 : retour power7(x,n) ; casser ;
-   cas 8 : retourner la puissance8(x,n) ; casser ;
-   cas 9 : renvoyer la puissance9(x,n) ; casser ;
-  cas 10 : renvoie la puissance10(x,n) ; casser ;
-     par défaut : renvoie 0 ;
-   }
-}
-
-   // remarque : les break sont ici inutiles car les return font déjà des break
-
-/*************************************************** /
-
-    // memes versions que la 10 mais avec des long double, puis des floats
-    // but du jeu : observateur des variations de précision
-
-   // observation :
-   // imprécision à partir de k~5 (float), k~12 (double), k~14 (long double)
-   // rend 1 à partir de k=8 (float), k=16 (double)
-   // rend 1 non observé sur les long double, maxint avant atteint
-
-longue double puissance11 (longue double x, longue n)
+int premier(Liste l)
 {
-    long double r = 1,0 ;
-    tandis que (n N'EST PAS 0)
-      { si (n % 2 == 1) alors r = r*x ; // pas d'autre
-        n = n / 2 ;
-        x = x * x ;
-       }
-    retourner r ;
+    return l->data ; 
 }
 
-/*************************************************** /
-
-float power12 (float x, long n)
+Liste ajoute(int x, Liste l)
 {
-    flottant r = 1,0 ;
-    tandis que (n N'EST PAS 0)
-      { si (n % 2 == 1) alors r = r*x ; // pas d'autre
-        n = n / 2 ;
-        x = x * x ;
-       }
-    retourner r ;
+    Liste tmp = (Liste) malloc(sizeof(Bloc)) ;
+    tmp->data = x ;
+    tmp->next = l ;
+    return tmp ;
 }
 
-
-/*************************************************** /
-/* */
-/* Ackermann */
-/* */
-/*************************************************** /
-
-
-int A1(int m, int n) { return 0 ; }
-
-int Ackermann1 (int m) { return 0 ; }
-
-/*************************************************** /
-
-int A2(int m, int n) { return 0 ; }
-
-int Ackermann2 (int m) { return 0 ; }
-
-/*************************************************** /
-
-int Ackermann3 (int m) { return 0 ; }
-
-/*************************************************** /
-
-int Ackermann4 (int m) { return 0 ; }
-
-/*************************************************** /
-
-int Ackermann5 (int m) { return 0 ; }
-
-/*************************************************** /
-  
-int Ackermann (int m, int i)
-{ commutateur (i)  
-   {
-   cas 1 : renvoie Ackermann1 (m) ; // casser ;
-   cas 2 : renvoie Ackermann2 (m) ; // casser ;
-   cas 3 : renvoie Ackermann3 (m) ; // casser ;
-   cas 4 : renvoie Ackermann4 (m) ; // casser ;
-   cas 5 : renvoie Ackermann5 (m) ; // casser ;
-   par défaut : renvoie 0 ;
-   }
-}
-
-
-/*************************************************** /
-/* */
-/* principal */
-/* */
-/*************************************************** /
-
-
-int principal (int argc, char** argv)
+void empile(int x, Liste *L)
 {
-
-       double X ;
-       long double y ;
-       flotter z ;
-       
-       int cptx ;
-  
-       nx long ;
-       
-       int je,j ;
-       
-/*************************************************** ****************************/
- 
-    // mettre "if true" vs "if false" selon que vous voulez les tests ou non
-  
-/**************** petit test sur le fonctionnement du switch ***********/
-
-si vrai) {
-
- interrupteur (2)  
-   {
-   cas 1 : printf("toc\n") ; casser ;
-   cas 2 : printf("pata") ;
-   cas 3 : printf("pouf\n") ; casser ;
-   cas 4 : printf("youpla") ;
-   par défaut : printf("boum\n") ;
-   }
-
-
- interrupteur (4)  
-   {
-   cas 1 : printf("toc\n") ; casser ;
-   cas 2 : printf("pata") ;
-   cas 3 : printf("pouf\n") ; casser ;
-   cas 4 : printf("youpla") ;
-   par défaut : printf("boum\n") ;
-   }
-
-   printf("\n") ;
-
-}
-      
-      
-/************************ taille des nombres ********************** ***/
-      
-si vrai) {     
-       
-       printf("ce programme suppose que les polices longues sont de 8 octets\n") ;
-       printf("S'ils n'en font que 4, il faudra utiliser long long\n") ;
-
-       printf("short : %d octets\n", (int) sizeof(short));
-       printf("int : %d octets\n", (int) sizeof(int));
-       printf("long : %d octets\n", (int) sizeof(long));
-       printf("long long : %d octets\n", (int) sizeof(long long));
-       printf("float : %d octets\n", (int) sizeof(float));
-       printf("double : %d octets\n", (int) sizeof(double));
-       printf("long double : %d octets\n", (int) sizeof(long double));
-       printf("\n") ;
- 
-       x = 1,0 ;
-       cptx = 0 ;
-       tandis que ( (1.0 + x) - 1.0 != 0 )
-          {x = x/10 ; cptx++ ; }
-       printf("1+1/10^c devient 1 à partir de c=%d pour les double\n", cptx) ;
-       printf("et 1+1/10^%d vaut en fait 1+%lf\n", cptx-1, (1.0 + 10*x) - 1.0) ;
-        
-       printf("ce programme suppose que les doubles font au moins 8 octets\n") ;
-       printf("et que ((double) 1+1/10^-15) n'est pas 1 \n") ;       
-       printf("Si ce n'est pas le cas, utilisez des long double \n") ;
-       
-       printf("\n") ;      
-}
-
-/************************ factorielle *********************** */
-
-si vrai) {
-
-     printf("%ld \n",fact(5)) ;
-     printf("%ld \n",fact2(5)) ;
-     printf("\n") ;
+      *L = ajoute(x,*L) ; 
 }
 
 
-/****************** Autour de e **************************** ***/
-
-  // d'après google,
-  // e = 2,7182818284 5904523536 0287471352 6624977572 4709369995
-  // 9574966967 6277240766 3035354759 4571382178 5251664274
-
-si vrai) {  
-       
-
-        printf(" e1 = %.20f \n", Efloat()) ;
-        printf(" e3 = %.30lf \n", Edouble()) ;
-        printf(" e3 = %.40Lf \n", Elongdouble()) ;
-        
+Liste suite(Liste l)
+{
+    return l->next ;
 }
 
-si vrai) {  
-            afficheYfloat(30) ;
-            afficheYdouble(30) ;
-            afficheYlongdouble(30) ;
+
+void depile(Liste *L)
+{
+    Liste tmp = *L ;
+    *L = suite(*L) ;
+    free(tmp) ;
 }
-        
-/****************** pouvoir ****************************** */
 
-si (faux) {  
+/*************************************************/
+/*                                               */
+/*     Affiche, avec les briques de base         */
+/*                                               */
+/*************************************************/
 
-        // test simplet, vérifie le BA BA, test de 2^10 pour toutes les versions
-        
-        pour(i=0 ; i<=10 ; i++)
-        printf("Power %d dit que power(2,10) vaut %.0lf \n", i, power(2,10,i) ) ;
-        
-        printf("\n") ;
+void affiche_rec(Liste l)
+{
+    if(estVide(l))
+        printf("\n");
+    else
+    {
+        printf("%d ", premier(l));
+        affiche_rec(suite(l));
+    }
+}
+
+
+void affiche_iter(Liste l)
+{
+    Liste L2 = l;
+    while(!estVide(L2))
+    {
+        printf("%d ", premier(L2));
+        L2 = suite(L2);
+    }
+    printf("\n");
+}
+
+/*************************************************/
+/*                                               */
+/*     Longueur, sans les briques de base        */
+/*                                               */
+/*************************************************/
+
+int longueur_rec (Liste l)
+{
+    if (l == NULL)
+         return 0 ;
+    else return (1 + longueur_rec(l->next)) ;
+}
+
+
+int longueur_iter (Liste l)
+{
+    Liste P = l;
+    int cpt = 0 ;
+    while (P ISNOT NULL)
+    {   P = P->next ;
+        cpt++ ;
+    }
+    return cpt ;
+}
+
+/*************************************************/
+/*                                               */
+/*       VireDernier,                            */
+/*               sans les briques de base,       */
+/*               ni le "->"                      */
+/*                                               */
+/*************************************************/
+
+void VD (Liste *L)
+          // *L non NULL ie liste non vide
+{
+     if ( ((**L).next) == NULL )
+            depile(L) ;   // moralement : depile(& (*L)) ;
+     else VD (& ( (**L).next )) ;
+}
+
+void VireDernier_rec (Liste *L)
+{
+     if ( (*L) ISNOT NULL )
+          VD(L);        // moralement : VD(& (*L)) ;
+}
+
+void VireDernier_iter (Liste *L)
+{
+    if ( (*L) ISNOT NULL)
+    {
+        while ( ((**L).next) ISNOT NULL )
+                 L = & ( (**L).next ) ;
+        free(*L) ;
+        *L = NULL ;
+     }
+}
+
+
+/*************************************************/
+/*                                               */
+/*       Libere la memoire                       */
+/*                                               */
+/*************************************************/
+
+void VideListe(Liste *L)
+{
+    if(NOT(estVide(*L)))
+    {
+        depile(L);
+        VideListe(L);
+    }
       
 }
-
-        
-si (faux) {  
-
-        je=5 ; // numéro de la version que l'on teste
-
-        // test de la résistance de puissance version i, calcul de (1+1/N)^N
-        // pour des N puissances de 10 de plus en plus grosses
-     
-        x = 1,0 ;
-        nx = 1 ;
-        pour(j=0 ; j<=15 ; j++)
-        {
-        printf("puissance %d ((1+10^-%2d)^(10^%2d)) rendu %.12lf\n", i, j, j, puissance(1+x,nx,i)) ;
-        x = x/10 ;
-        nx = nx * 10 ;
+/*************************************************/
+/*                                               */
+/*           Croissante                           */
+/*                                               */
+/*************************************************/
+bool croissante(Liste head) {
+    Liste current = head;
+    
+         while (NOT estVide(current) AND NOT estVide(suite(current))) {
+            
+             if( (premier(current) > premier(suite(current))) ){
+                 return FALSE ;
+             }
+            current = suite(current);    
         }
-        printf("\n") ;
+        return TRUE ;
        
 }
-     
-si (faux) {
 
-        // tests sur la précision que l'on obtient suivant que
-        // on utilise float, double, long double
-
-        printf("VERSION 12 avec float \n") ;
-        z = 1,0 ;
-        nx = 1 ;
-        pour(j=0 ; j<=18 ; j++)
-        {
-        printf("power((1+10^-%2d)^(10^%2d)) rend %.12f\n", j, j, power12(1+z,nx)) ;
-        z = z/10 ;
-        nx = nx * 10 ;
+/*************************************************/
+/*                                               */
+/*          NombreMemePosition                    */
+/*                                               */
+/*************************************************/
+int compareElements1(Liste list1, Liste list2) {
+    int  i = 0; Liste tmp1 = list1; Liste tmp2 = list2;
+    while (NOT estVide(tmp1) AND NOT estVide(tmp2)) {
+       
+        if (premier(tmp1) == premier(tmp2)) {
+            i = i+1 ;  
         }
-        printf("\n") ;
-
-
-        printf("VERSION 10 avec double \n") ;
-        x = 1,0 ;
-        nx = 1 ;
-        pour(j=0 ; j<=18 ; j++)
-        {
-        printf("power((1+10^-%2d)^(10^%2d)) rendu %.12lf\n", j, j, power10(1+x,nx)) ;
-        x = x/10 ;
-        nx = nx * 10 ;
-        }
-        printf("\n") ;
-
-
-        printf("VERSION 11 avec long double \n") ;
-        y = 1,0 ;
-        nx = 1 ;
-        pour(j=0 ; j<=18 ; j++)
-        {
-        printf("power((1+10^-%2d)^(10^%2d)) rendu %.12LF\n", j, j, power11(1+y,nx)) ;
-        y = y/10 ;
-        nx = nx * 10 ;
-        }
-        printf("\n") ;
-
-
-
+        tmp1 = suite(tmp1);
+        tmp2 = suite(tmp2);
+    }
+    return i;
 }
 
-/****************** Ackermann ***************************** */
-                
-si (faux) {
- 
-        for(i=1 ; i<=5 ; i++) // numéro de version
+
+int compareElements2(Liste list1, Liste list2) {
+    int  i = 0; Liste tmp1 = list1; Liste tmp2 = list2;
+    if ( estVide(tmp1)  OR estVide(tmp2) ) {
+        return 0 ;
+    } else {
         
-        for(j=0 ; j<=5 ; j++) // test de A(j,0) pour j de 0 à 5
+           if (premier(list1) == premier(list2)) {
+                i = i+1 ;  
+            }
+    }
+    return i + compareElements2(suite(tmp1) , suite(tmp2));
+}
+
+
+void S_compareElements(Liste list1, Liste list2, int *nbre){
+    
+     if ( NOT estVide(list1) && NOT estVide(list2)) {
         
-        printf("Ack%d(%d) = %d \n", i, j, Ackermann(j,i)) ;
+           if (premier(list1) ==  premier(list2)) {
+               *nbre += 1 ;
+               S_compareElements( suite(list1) , suite(list2) ,nbre); 
+            } else {
+               
+                S_compareElements(suite(list1) , suite(list2) ,nbre); 
+            }  
+    }
+} 
+
+int compareElements3(Liste list1, Liste list2) {
+    int nbre = 0 ;
+     S_compareElements(list1,list2,&nbre);
+    return nbre ; 
 }
 
-/*************************************************** **********************/
 
-    renvoie 0 ;
+/*************************************************/
+/*                                               */
+/*           AjouteDevantPremierZero              */
+/*                                               */
+/*************************************************/
+
+ void AjoutePremierZero( Liste *L , int x ){
+    if (estVide(*L) || premier(*L) == 0)
+    {
+        empile(x,L);
+        return;
+    }
+    else
+        AjoutePremierZero( &((*L)->next) ,x );
+        
+}
+
+/*************************************************/
+/*                                               */
+/*  AjouteDevantDernierZero                      */
+/*                                               */
+/*************************************************/
+void SousAjoute( Liste *L, int x , Liste *M){
+    if(estVide(*L)){
+        if( estVide(*M)){
+            empile(x,L);
+        } else {
+            empile(x,M);
+        }
+    }else{
+        if( premier(*L)==0){
+            M = L ;
+            SousAjoute( &((*L)->next) , x , M );
+        } else {
+            SousAjoute( &((*L)->next) , x , M );
+        }
+        
+    }
+}
+
+void AjouteDernierZero( Liste *L , int x ){
+    Liste *M = NULL ;
+     SousAjoute( L, x , M);
+}
+
+/*************************************************/
+/*                                               */
+/*                TIC                            */
+/*                                               */
+/*************************************************/
+void TIC( Liste *L ){ 
+    Liste tmp1 = NULL ;
+    if( estVide(*L) OR premier(*L)==0){
+        return;
+    } else {
+        
+        /* je recupere tout les entiers non nul avant le dernier zero a delete*/
+        while(!estVide(*L)){
+            if(premier(*L)==0 && premier(suite(*L)) !=0 ){
+               (*L) = suite(*L) ; break ;
+            } else if (premier(*L) != 0) {
+               empile ( premier(*L),&tmp1);
+            }   
+          (*L) = suite(*L) ;
+        }
+        
+        /* j'enpile ses elements dans la liste en ajoutant un zero devant chaque nombre*/
+        while(!estVide(tmp1)){
+            empile(premier(tmp1),L);
+            empile(0,L);
+            (tmp1) = suite(tmp1) ;
+        }  
+    }
+}
+
+/*************************************************/
+/*                                               */
+/*           Main                                */
+/*                                               */
+/*************************************************/
+
+void poup (Liste l)
+{
+        printf("Double Affichage \n") ;
+        affiche_rec(l) ;
+        affiche_iter(l) ;
+
+        printf("Longueur en double %d %d \n\n", 
+                           longueur_rec(l), 
+                           longueur_iter(l) 
+               ) ;
 }
 
 
 
+int main(int argc, char** argv)
+{
+    Liste list1 = NULL; Liste list2 = NULL;
+    int elementsList1[] = {3,7,2,0,0,0,8,9,0,0,2,1}; int elementsList2[] = {1,7,3,0,6,0,0,5,8,9,10};
 
+    for (int i = 0; i < sizeof(elementsList1) / sizeof(elementsList1[0]); ++i) {
+        empile( elementsList1[i],&list1);
+    }
+
+    for (int i = 0; i < sizeof(elementsList2) / sizeof(elementsList2[0]); ++i) {
+        empile(elementsList2[i],&list2);
+    }
+
+    if(FALSE){
+        printf(" La valeur de retour est:  %d \n", croissante(list1));
+    }
+
+    if(FALSE){
+        printf("le nombre de x a la meme position est : %d\n",compareElements2(list1, list2));
+        printf("le nombre de x a la meme position est : %d\n",compareElements1(list1, list2));
+        printf("le nombre de x a la meme position est : %d\n",compareElements3(list1, list2));
+    }
+
+    if(FALSE){
+        printf("la liste avant Ajout est: "); affiche_rec(list1);
+        AjoutePremierZero(&list1 , 2) ;
+        printf("\n"); printf("la liste aprés Ajout est: "); affiche_rec(list1);
+    }
+
+    if(TRUE){
+        printf("la liste avant modification est: "); affiche_rec(list1);
+        AjouteDernierZero(&list1,9);
+        printf("\n"); printf("la liste aprés modification est: "); affiche_rec(list1);
+    }
+
+    if(FALSE){
+        printf("la liste avant la fonction TIC est: ");affiche_rec(list1);
+         TIC( & list1);
+        printf("la liste apréz la fonction TIC est: ");affiche_rec(list1);
+    }
+  /*  Liste l ;
+
+        initVide (&l) ;
+
+          poup(l) ;
+
+             empile(4, &l) ;
+
+          poup(l) ;
+
+             empile(5, &l) ;
+             empile(6, &l) ;
+             empile(7, &l) ;
+             empile(8, &l) ;
+             empile(9, &l) ;
+
+          poup(l) ;
+
+        VireDernier_rec  (&l) ;
+        VireDernier_iter (&l) ;
+        depile(& l) ;
+
+          poup(l) ;
+
+    VideListe(&l);*/
+    return 0;
+}
 
